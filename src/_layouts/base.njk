@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css" />
+
+    <script defer src="https://unpkg.com/@alpinejs/intersect@3.7.0/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/@alpinejs/collapse@3.7.0/dist/cdn.min.js"></script>
+    <script src="//unpkg.com/alpinejs@3.7.0/dist/cdn.min.js" defer></script>
+    <noscript><style>noscript { display: contents; } .lazy-img { display: none; }</style></noscript>
+    <title>{{ title }}</title>
+</head>
+
+<body class="bg-slate-50 tet-gray-900 flex flex-col min-h-screen">
+    <a 
+        class="focus:translate-y-0 absolute z-50 p-4 m-1 text-red-500 transition-transform -translate-y-16 bg-black rounded-lg"
+        href="#main-content"
+        tabindex="0"
+    >
+        Skip Navigation
+    </a>
+
+    {% include 'nav.njk' %}
+    
+    <div id="main-content" class="flex-auto">
+        {{ content | safe }}
+    </div>
+    
+    {% include 'footer.njk' %}
+    <script src="/assets/js/site.js"></script>
+
+</body>
+
+</html>
