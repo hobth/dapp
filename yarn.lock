@@ -957,6 +957,11 @@
   "resolved" "https://registry.npmjs.org/doctypes/-/doctypes-1.1.0.tgz"
   "version" "1.1.0"
 
+"dotenv@^16.0.0":
+  "integrity" "sha512-qD9WU0MPM4SWLPJy/r2Be+2WgQj8plChsyrCNQzW/0WjvcJQiKQJ9mH3ZgB3fxbUUxgc/11ZJ0Fi5KiimWGz2Q=="
+  "resolved" "https://registry.npmjs.org/dotenv/-/dotenv-16.0.0.tgz"
+  "version" "16.0.0"
+
 "easy-extender@^2.3.4":
   "integrity" "sha512-8cAwm6md1YTiPpOvDULYJL4ZS6WfM5/cTeVVh4JsvyYZAoqlRVUpHL9Gr5Fy7HA6xcSZicUia3DeAgO3Us8E+Q=="
   "resolved" "https://registry.npmjs.org/easy-extender/-/easy-extender-2.3.4.tgz"

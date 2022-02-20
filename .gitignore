@@ -1,6 +1,7 @@
 node_modules/*
 dist/*
 .cache
+.env
 
 # MacOS garbage
 .DS_Store?

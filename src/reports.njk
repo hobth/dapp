@@ -1,0 +1,142 @@
+---
+title: Reports 
+--- 
+
+
+<div x-data="report()"> 
+<!-- This example requires Tailwind CSS v2.0+ -->
+<div class="flex flex-col">
+  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+      <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Volume 24h/Floor 7d</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Currency</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Market Cap</th>
+              <th scope="col" class="relative px-6 py-3">
+                <span class="sr-only">Edit</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+
+
+            <template x-for="item in stats">
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 h-10 w-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
+                    </svg>
+                  </div>
+                  <div class="ml-4">
+                    <div x-text="item.collection_name" class="text-sm font-medium text-gray-900">name</div>
+                    <div x-text="item.collection_address" class="text-sm text-gray-500">address</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div x-text="item.avg_volume_quote_24h" class="text-sm text-gray-900">Regional Paradigm Technician</div>
+                <div x-text="item.floor_price_quote_7d" class="text-sm text-gray-500">Optimization</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span x-text="item.quote_currency" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"> Active </span>
+              </td>
+              <td x-text="item.market_cap_quote" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Cap</td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <a :href="'/list/#'+item.collection_address" class="text-indigo-600 hover:text-indigo-900">Details</a>
+              </td>
+            </tr>
+            </template>
+
+            <!-- More people... -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div >
+<script>
+const covalentapi = localStorage.getItem('covalentapi')
+
+function report()  {
+    return {
+        stats:[],
+        init() {
+            fetch('https://api.covalenthq.com/v1/1/nft_market/?key='+covalentapi)
+            .then(res => res.json())
+            .then(data => {
+                this.stats = data.data.items.filter(
+                    item=>item.collection_name!==null
+                    &&item.avg_volume_quote_24h!=0
+                    &&item.collection_address!='0xd07dc4262bcdbf85190c01c996b4c06a461d2430')
+                    .map(item=>{
+                        item.market_cap_quote = nFormatter(item.market_cap_quote,1).toLocaleString()
+                        item.avg_volume_quote_24h = nFormatter(item.avg_volume_quote_24h,1).toLocaleString()
+                        item.floor_price_quote_7d = nFormatter(item.floor_price_quote_7d,1).toLocaleString()
+                        return item
+                    })
+                {# this.stats.forEach(item=>{
+                    fetch('https://api.covalenthq.com/v1/1/tokens/'+item.collection_address+'/nft_metadata/1/?key='+covalentapi)
+                    .then(res => res.json())
+                    .then(data => {
+                        item.logo_url = data.data.items[0].logo_url;
+                        console.log(data);
+                    })
+                }) #}
+                console.log(this.stats);
+            })
+        }
+    }
+}
+
+function kFormatter(num) {
+    return Math.abs(num) > 999 ? Math.sign(num)*((Math.abs(num)/1000).toFixed(1)) + 'k' : Math.sign(num)*Math.abs(num)
+}
+function nFormatter(num, digits) {
+  const lookup = [
+    { value: 1, symbol: "" },
+    { value: 1e3, symbol: "k" },
+    { value: 1e6, symbol: "M" },
+    { value: 1e9, symbol: "G" },
+    { value: 1e12, symbol: "T" },
+    { value: 1e15, symbol: "P" },
+    { value: 1e18, symbol: "E" }
+  ];
+  const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+  var item = lookup.slice().reverse().find(function(item) {
+    return num >= item.value;
+  });
+  return item ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol : "0";
+}   
+
+/*
+avg_volume_quote_24h: 34978.535
+avg_volume_wei_24h: "12070127678571400000"
+chain_id: 1
+collection_address: "0x5cc5b05a8a13e3fbdb0bb9fccd98d38e50f90c38"
+collection_name: "Sandbox's LANDs"
+contract_deployment_at: null
+floor_price_quote_7d: 37048.17
+floor_price_wei_7d: "12784302652332500000"
+gas_quote_rate: 2897.9424
+market_cap_quote: 65161132
+market_cap_wei: "22485310332334900000000"
+max_price_quote: 199610.27
+max_price_wei: "68880000000000000000"
+opening_date: "2022-02-17"
+quote_currency: "USD"
+transaction_count_alltime: 1829
+unique_token_ids_sold_count_alltime: 1510
+unique_wallet_purchase_count_alltime: 905
+volume_quote_24h: 3917595.8
+volume_wei_24h: "1351854300000000000000"
+*/
+</script>

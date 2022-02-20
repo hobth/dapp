@@ -1,35 +1,156 @@
 ---
-title: Homepage
+title: Home
 ---
-    <div class="replit_content">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="navbar-brand" href="#">
-              <h1>Demo: NFT Dashboard</h1>
-              <img src="/assets/images/covalent.svg" alt="Covalent Logo" style="width:40%;">
-          </div>
-      </nav>
-      <br> 
-    
-      <h2>Select an NFT collection on Avalanche: </h2>
-      <select class="input_field" name="address" id="address">
-      </select>
-      <br><br>
+<div x-data="home()">
+      <!-- Pinned projects -->
+      <div class="px-4 mt-6 sm:px-6 lg:px-8" >
+        <h2 class="text-gray-500 text-xs font-medium uppercase tracking-wide">Pinned Projects</h2>
+        <ul role="list" class="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 xl:grid-cols-4 mt-3">
+          
+          <template x-for="item in pinned_projects">
+          <li class="relative col-span-1 flex shadow-sm rounded-md">
+            <div x-text="item.ticker" class="flex-shrink-0 flex items-center justify-center w-16 bg-blue-600 text-white text-sm font-medium rounded-l-md">GA</div>
+            <div class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
+              <div class="flex-1 px-4 py-2 text-sm truncate">
+                <a x-text="item.name" :href="'/list#'+item.address" class="text-gray-900 font-medium hover:text-gray-600"> GraphQL API </a>
+                <p x-text="item.address" class="text-gray-500">12 </p>
+              </div>
+              <div class="flex-shrink-0 pr-2">
+                <button type="button" class="w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500" id="pinned-project-options-menu-0-button" aria-expanded="false" aria-haspopup="true">
+                  <span class="sr-only">Open options</span>
+                  <!-- Heroicon name: solid/dots-vertical -->
+                  <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                  </svg>
+                </button>
+                <div x-show="pinnedmenu" class="z-10 mx-3 origin-top-right absolute right-10 top-3 w-48 mt-1 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-200 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="pinned-project-options-menu-0-button" tabindex="-1">
+                  <div class="py-1" role="none">
+                    <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="pinned-project-options-menu-0-item-0">View</a>
+                  </div>
+                  <div class="py-1" role="none">
+                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="pinned-project-options-menu-0-item-1">Remove from pinned</a>
+                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="pinned-project-options-menu-0-item-2">Share</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          </template> 
 
-      <h2>Enter NFT ID (between 1-100):</h2> <input type="text" size="60" id="tokenId" value="1">
-      <button class="btn btn-primary" onclick="getNFTMetaData()">Get NFT Data!</button>
-      <br><br>
-      <h2>Metadata</h2>
-      <ul id="metadata"></ul>
+          <!-- More items... -->
+        </ul>
+      </div>
 
-      <h2>NFT Data</h2>
-      <table id="tokenTable" class="table table-striped"></table>
+      <!-- Projects list (only on smallest breakpoint) -->
+      <div class="mt-10 sm:hidden">
+        <div class="px-4 sm:px-6">
+          <h2 class="text-gray-500 text-xs font-medium uppercase tracking-wide">Collections</h2>
+        </div>
+        <ul role="list" class="mt-3 border-t border-gray-200 divide-y divide-gray-100">
+          <template x-for="item in projects">
+          <li>
+            <a :href="'/list#'+item.address" class="group flex items-center justify-between px-4 py-4 hover:bg-gray-50 sm:px-6">
+              <span class="flex items-center truncate space-x-3">
+                <span class="w-2.5 h-2.5 flex-shrink-0 rounded-full bg-pink-600" aria-hidden="true"></span>
+                <div x-text="item.name" class="font-medium truncate text-sm leading-6">
+                  Name
+                </div>
+                <span x-text="item.ticker" class="truncate font-normal text-gray-500">ticker</span>
+              </span>
+              <!-- Heroicon name: solid/chevron-right -->
+              <svg class="ml-4 h-5 w-5 text-gray-400 group-hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </li>
+          </template> 
 
-      <script src="/assets/js/covalent.js"></script>
+          <!-- More projects... -->
+        </ul>
+      </div>
 
-      <!-- Bootstrap code -->
-      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    </div> 
+      <!-- Projects table (small breakpoint and up) -->
+      <div class="hidden mt-8 sm:block">
+        <div class="align-middle inline-block min-w-full border-b border-gray-200">
+          <table class="min-w-full">
+            <thead>
+              <tr class="border-t border-gray-200">
+                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <span class="lg:pl-2">My Project</span>
+                </th>
+                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sales 1h</th>
+                <th class="pr-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-100">
+              <template x-for="item in projects">
+              <tr>
+                <td class="px-6 py-3 max-w-0 w-full whitespace-nowrap text-sm font-medium text-gray-900">
+                  <div class="flex items-center space-x-3 lg:pl-2">
+                    <div class="flex-shrink-0 w-2.5 h-2.5 rounded-full bg-blue-600" aria-hidden="true"></div>
+                    <a :href="'/list#'+item.address" class="truncate hover:text-gray-600">
+                      <span>
+                        <span x-text="item.name"> GraphQL API</span></br>
+                        <span x-text="item.ticker" class="text-gray-500 font-normal">in Engineering</span>
+                      </span>
+                    </a>
+                  </div>
+                </td>
+                <td class="px-6 py-3 text-sm text-gray-500 font-medium">
+                  <div class="flex items-center space-x-2">
+                    <div class="flex flex-shrink-0 -space-x-1">
+                      <template x-for="sale of item.events">
+                      <img class="max-w-none h-6 w-6 rounded-full ring-2 ring-white" :src="sale" alt="">
+                      </template>
+                    </div>
+
+                    <span class="flex-shrink-0 text-xs leading-5 font-medium"></span>
+                  </div>
+                </td>
+                <td class="px-6 py-3 whitespace-nowrap text-right text-sm font-medium">
+                  <a :href="'/list#'+item.address" class="text-indigo-600 hover:text-indigo-900">Review</a>
+                </td>
+              </tr>
+              </template>
+
+              <!-- More projects... -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+</div>
+
+<script src="/assets/js/covalent.js"></script>
 
 <script>
+
+function home() {
+    console.log(supported_collection)
+    return {
+        projects:supported_collection,
+        pinned_projects:supported_collection.sort(() => Math.random() - 0.5).slice(0,1),
+        async init() {
+            this.projects.forEach(async item => {
+                events = await getOSEvents(item.address)
+                item.events = events.asset_events.map(el=>el.asset.image_thumbnail_url).slice(0,2+Math.random()*8)
+            })
+        }
+    }
+}
+
+function getOSEvents(address) {
+    console.log('loadding from OS ', address)
+    return fetch('https://api.opensea.io/api/v1/events?asset_contract_address='+address+'&event_type=successful&limit=10',{
+        headers:{
+        'X-API-KEY': os_key,
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        return res;
+    })
+}
 
 </script> 

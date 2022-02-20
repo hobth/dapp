@@ -1,5 +1,5 @@
 // Demo API Key
-const APIKEY = 'ckey_11ab7f61af6947d6ba1f41ecea5'
+const APIKEY = localStorage.getItem('covalentapi');
 
 // Blockchain network setup
 //const chainId = 43114 // Avalanche Mainnet
@@ -13,27 +13,35 @@ const nftMetadataEndpoint = 'nft_metadata'
 const supported_collection = [
   {
     "name": "Bufficorn",
-    "address": "0x1e988ba4692e52bc50b375bcc8585b95c48aad77"
+    "address": "0x1e988ba4692e52bc50b375bcc8585b95c48aad77",
+    "ticker": "BUFF",
   },
   {
     "name": "Budverse",
-    "address": "0xd6F4A923E2ecd9Ab7391840Ac78d04Bfe40Bd5E1"
+    "address": "0xd6F4A923E2ecd9Ab7391840Ac78d04Bfe40Bd5E1",
+    "ticker": "BUDV",
+  },
+  {
+    "name": "DonutShop",
+    "address": "0xca20f7279f7defd14e7524e609704ea2f436a539",
+    "ticker": "DSH",
   }
 ]
 function getNFTCollection (address) {
+    console.log('getting collection', address);
     address = address || '0x0540E4EE0C5CdBA347C2f0E011ACF8651bB70Eb9';
     const url = new URL(`https://api.covalenthq.com/v1/${chainId}/tokens/${address}/${nftIdsEndpoint}/?&key=${APIKEY}`);
 
     return fetch(url)
     .then((resp) => resp.json())
     .then(function(data) {
+        console.log(data)
         return data.data.items;
     })
 }
 
 function getNFTToken (address, tokenId) {
     const url = new URL(`https://api.covalenthq.com/v1/${chainId}/tokens/${address}/${nftMetadataEndpoint}/${tokenId}/?&key=${APIKEY}`);
-    console.log(address,tokenId)
     return fetch(url)
     .then((resp) => resp.json())
     .then(function(data) {
@@ -139,10 +147,3 @@ function getNFTMetaData() {
     })
 }
 
-supported_collection.forEach((item, index) => {
-  var option = document.createElement("option");
-  option.text = item.name;
-  option.value = item.address;
-  var collection = document.getElementById('address');
-  collection.appendChild(option);
-});

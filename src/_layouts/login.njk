@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ropa+Sans&display=swap" rel="stylesheet">
+
+    <script defer src="https://unpkg.com/@alpinejs/intersect@3.7.0/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/@alpinejs/collapse@3.7.0/dist/cdn.min.js"></script>
+    <script src="//unpkg.com/alpinejs@3.7.0/dist/cdn.min.js" defer></script>
+
+    <title>{{ title }}</title>
+    <script> 
+    let os_key = localStorage.getItem('os_key');
+    </script>
+</head>
+    <div class="mx-auto">
+    <div class="text-center mt-20 px-4 scale-150">
+        <span class="text-2xl" id='logo' >NFT2B</span>
+    </div>
+    </div>
+
+    {{ content | safe }}
+
+<script>
+function nav() {
+    return {
+        usermenu:false,
+        pinnedmenu:false,
+        sidepanel:false,
+    }
+}
+</script>
+</html>
